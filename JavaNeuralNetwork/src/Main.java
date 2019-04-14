@@ -12,6 +12,7 @@ public class Main {
 			NeuralNetwork nn = new NeuralNetwork(sigmoid, 2, 2, 1);
 			
 			
+			
 		} catch (NeuralNetworkException nnException) {
 			nnException.printStackTrace();
 		}

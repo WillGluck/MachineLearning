@@ -1,7 +1,6 @@
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.function.Function;
 
 public class Layer {
 	
@@ -12,6 +11,14 @@ public class Layer {
 		for (int i = 0; i < neuronCount; i++) {
 			neurons.add(new Neuron());
 		}
+	}
+	
+	public Neuron getNeuron(Integer index) {
+		return neurons.get(index);
+	}
+	
+	public Integer getSize() {
+		return neurons.size();
 	}
 
 	public List<Neuron> getNeurons() {

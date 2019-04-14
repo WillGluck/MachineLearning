@@ -1,12 +1,16 @@
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class NeuralNetwork {
 
 	private List<Layer> layers;
 	private Function<Double, Double> activationFuction;
+	
 	
 	public NeuralNetwork(Function<Double, Double> activationFunction, Integer...layersNeuronCount) throws NeuralNetworkException {
 		
@@ -37,7 +41,44 @@ public class NeuralNetwork {
 			}
 		}
 	}
+	
+	public Integer predict(Double...values) throws NeuralNetworkException {
 		
+		int inputLayerSize = layers.get(0).getSize();
+		if (null == values || values.length != inputLayerSize)
+			throw new NeuralNetworkException("The input has to have the same size as the input layer - " + inputLayerSize);
+		
+		Layer firstLayer = layers.get(0);
+		for (int i = 0; i < values.length; i++) {			
+			firstLayer.getNeuron(i).setValue(values[i]);
+		}
+		
+		for (Layer layer: layers) {
+			
+			if (0 == layers.indexOf(layer))
+				continue;
+			
+			for (Neuron neuron: layer.getNeurons()) {
+				for (Connection connection: neuron.getInConnections()) {
+					Double weightValueProduct = neuron.getValue() * connection.getWeight();
+					connection.getTargetNeuron().addValue(weightValueProduct);
+				}
+				neuron.setValue(activationFuction.apply(neuron.getValue() + neuron.getBias()));
+			}			
+		}
+		
+		List<Double> lastNeuronsValues = layers.get(layers.size() - 1).getNeurons().stream().map(i -> i.getValue()).collect(Collectors.toList());
+		Integer answerIndex = IntStream.range(0, lastNeuronsValues.size())
+								   .reduce((i,j) -> lastNeuronsValues.get(i) < lastNeuronsValues.get(j) ? j : i)
+							   	   .getAsInt();	
+		
+		return answerIndex;
+	}
+	
+	public Integer predict(Integer...values) throws NeuralNetworkException {
+		return predict(Arrays.asList(values).stream().map(i -> i.doubleValue()).toArray(Double[]::new));
+	}
+			
 	public void setLayers(List<Layer> layers) {
 		this.layers = layers;
 	}
@@ -55,3 +96,4 @@ public class NeuralNetwork {
 	}
 	
 }
+
