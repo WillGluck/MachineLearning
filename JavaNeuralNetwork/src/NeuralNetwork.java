@@ -75,9 +75,11 @@ public class NeuralNetwork {
 		return answerIndex;
 	}
 	
-	public Integer predict(Integer...values) throws NeuralNetworkException {
-		return predict(Arrays.asList(values).stream().map(i -> i.doubleValue()).toArray(Double[]::new));
-	}
+//	public Integer predict(Integer...values) throws NeuralNetworkException {
+//		return predict(Arrays.asList(values).stream().map(i -> i.doubleValue()).toArray(Double[]::new));
+//	}
+	
+	
 			
 	public void setLayers(List<Layer> layers) {
 		this.layers = layers;
@@ -93,6 +95,15 @@ public class NeuralNetwork {
 
 	public void setActivationFuction(Function<Double, Double> activationFuction) {
 		this.activationFuction = activationFuction;
+	}
+	
+
+	public Integer getInputSize() {
+		return layers.get(0).getSize();
+	}
+	
+	public Integer getOutputSize() {
+		return layers.get(0).getSize();
 	}
 	
 }
