@@ -42,7 +42,7 @@ public class NeuralNetwork {
 		}
 	}
 	
-	public Integer predict(Double...values) throws NeuralNetworkException {
+	public Double[] predict(Double...values) throws NeuralNetworkException {
 		
 		int inputLayerSize = layers.get(0).getSize();
 		if (null == values || values.length != inputLayerSize)
@@ -67,17 +67,16 @@ public class NeuralNetwork {
 			}			
 		}
 		
-		List<Double> lastNeuronsValues = layers.get(layers.size() - 1).getNeurons().stream().map(i -> i.getValue()).collect(Collectors.toList());
-		Integer answerIndex = IntStream.range(0, lastNeuronsValues.size())
-								   .reduce((i,j) -> lastNeuronsValues.get(i) < lastNeuronsValues.get(j) ? j : i)
-							   	   .getAsInt();	
+		return layers.get(layers.size() - 1).getNeurons().stream().map(i -> i.getValue()).toArray(Double[]::new);
 		
-		return answerIndex;
 	}
 	
-//	public Integer predict(Integer...values) throws NeuralNetworkException {
-//		return predict(Arrays.asList(values).stream().map(i -> i.doubleValue()).toArray(Double[]::new));
-//	}
+	public Integer getPredictionIndex(Double[] result) {
+	     Integer answerIndex = IntStream.range(0, result.length)
+	             .reduce((i,j) -> result[i] < result[j] ? j : i)
+	             .getAsInt();
+	     return answerIndex; 
+	}
 	
 	
 			
