@@ -1,3 +1,4 @@
+import java.util.function.Function;
 
 public class SquaredErrorCostFunction extends AbstractCostFunction {
 
@@ -7,26 +8,9 @@ public class SquaredErrorCostFunction extends AbstractCostFunction {
 
     private Integer batchSize;
 	
-	public Double calculate() throws NeuralNetworkException {
-		
-		Integer dataSize = dataLoader.getDataSize();
-				
-		Double[][] data = null;
-		Integer[] labels = null;
-		if (null == batchSize) {
-		    data = dataLoader.getAllTrainingData();
-		    labels = dataLoader.getAllLabels();
-		} else {
-		    data = dataLoader.getTrainingBatch(batchSize);
-		    labels = dataLoader.getLabelBatch(batchSize);
-		}
-		
-		for (int i = 0; i < dataSize; i++) {
-			Double[] prediction = nn.predict(data[i]);
-		}
-		
-		
-		return 0d;
+	@Override
+	public Function<Double, Function<Double, Double>> getFunction() {
+		return i -> j -> Math.sqrt(Math.pow(i, 2) + Math.pow(j, 2));		
 	}
 
     public Integer getBatchSize() {

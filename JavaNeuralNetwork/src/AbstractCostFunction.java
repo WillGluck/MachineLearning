@@ -1,4 +1,3 @@
-
 public abstract class AbstractCostFunction implements ICostFunction {
 	
 	protected NeuralNetwork nn;
@@ -6,11 +5,40 @@ public abstract class AbstractCostFunction implements ICostFunction {
 	protected Integer batchSize;
 	
 	public AbstractCostFunction(NeuralNetwork nn, IDataLoader dataLoader, Integer batchSize) throws CostFunctionException {
+		
 		this.nn = nn;
 		this.dataLoader = dataLoader;
+		
 		if (null != batchSize && (0 >= batchSize || batchSize < dataLoader.getDataSize()))
             throw new CostFunctionException("Batch size needs to be within the dataset size.");
+		
         this.batchSize = batchSize;
+	}
+	
+	public Double calculate() throws NeuralNetworkException {
+		
+		Integer dataSize = dataLoader.getDataSize();
+				
+		Double[][] data = null;
+		Integer[] labels = null;
+		
+		if (null == batchSize) {
+		    data = dataLoader.getAllTrainingData();
+		    labels = dataLoader.getAllLabels();
+		} else {
+		    data = dataLoader.getTrainingBatch(batchSize);
+		    labels = dataLoader.getLabelBatch(batchSize);
+		}
+		
+		Double cost = 0d;
+		for (int i = 0; i < dataSize; i++) {
+			Double[] prediction = nn.predict(data[i]);			
+			Integer label = labels[i];
+			for (int j = 0; i < prediction.length; j++) {
+				cost += getFunction().apply(prediction[i]).apply(label.equals(j) ? 1d : 0d);
+			}
+		}		
+		return cost;
 	}
 
 	public NeuralNetwork getNn() {
