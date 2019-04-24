@@ -1,9 +1,7 @@
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class NeuralNetwork {
@@ -59,9 +57,10 @@ public class NeuralNetwork {
 				continue;
 			
 			for (Neuron neuron: layer.getNeurons()) {
+			    neuron.setValue(0d);
 				for (Connection connection: neuron.getInConnections()) {
-					Double weightValueProduct = neuron.getValue() * connection.getWeight();
-					connection.getTargetNeuron().addValue(weightValueProduct);
+					Double weightValueProduct = connection.getTargetNeuron().getValue() * connection.getWeight();
+					neuron.addValue(weightValueProduct);
 				}
 				neuron.setValue(activationFuction.apply(neuron.getValue() + neuron.getBias()));
 			}			

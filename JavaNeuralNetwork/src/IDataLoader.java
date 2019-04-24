@@ -9,16 +9,18 @@ public interface IDataLoader {
 	
 	Integer getDataSize();
 	
+	Integer getTrainingDataSize();
+	
 	Double[] getTrainingExample();
 	    
     Double[][] getTrainingBatch(Integer batchSize);
 	    
     Double[][] getAllTrainingData();
 	
-	Integer getSingleLabel();
+	Double getSingleLabel();
 	
-	Integer[] getLabelBatch(Integer batchSize);
+	Double[] getLabelBatch(Integer batchSize);
 	
-	Integer[] getAllLabels();
-
+	Double[] getAllLabels();
+	
 }

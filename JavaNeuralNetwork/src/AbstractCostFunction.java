@@ -9,18 +9,18 @@ public abstract class AbstractCostFunction implements ICostFunction {
 		this.nn = nn;
 		this.dataLoader = dataLoader;
 		
-		if (null != batchSize && (0 >= batchSize || batchSize < dataLoader.getDataSize()))
+		if (null != batchSize && (0 >= batchSize || batchSize < dataLoader.getTrainingDataSize()))
             throw new CostFunctionException("Batch size needs to be within the dataset size.");
-		
-        this.batchSize = batchSize;
+
+		this.batchSize = batchSize;
 	}
 	
 	public Double calculate() throws NeuralNetworkException {
 		
-		Integer dataSize = dataLoader.getDataSize();
+		Integer dataSize = dataLoader.getTrainingDataSize();
 				
 		Double[][] data = null;
-		Integer[] labels = null;
+		Double[] labels = null;
 		
 		if (null == batchSize) {
 		    data = dataLoader.getAllTrainingData();
@@ -33,9 +33,9 @@ public abstract class AbstractCostFunction implements ICostFunction {
 		Double cost = 0d;
 		for (int i = 0; i < dataSize; i++) {
 			Double[] prediction = nn.predict(data[i]);			
-			Integer label = labels[i];
-			for (int j = 0; i < prediction.length; j++) {
-				cost += getFunction().apply(prediction[i]).apply(label.equals(j) ? 1d : 0d);
+			Double label = labels[i];
+			for (Integer j = 0; i < prediction.length; j++) {
+				cost += getFunction().apply(prediction[i]).apply(label.equals(j.doubleValue()) ? 1d : 0d);
 			}
 		}		
 		return cost;

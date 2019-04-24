@@ -6,7 +6,7 @@ public class Neuron {
 	private List<Connection> inConnections;
 	private List<Connection> outConnections;
 	private Double value;
-	private Double bias;
+	private Double bias = 0d;
 		
 	public Neuron() {
 		inConnections = new LinkedList<>();
