@@ -17,10 +17,10 @@ public interface IDataLoader {
 	    
     Double[][] getAllTrainingData();
 	
-	Double getSingleLabel();
+	Double[] getLabel();
 	
-	Double[] getLabelBatch(Integer batchSize);
+	Double[][] getLabelBatch(Integer batchSize);
 	
-	Double[] getAllLabels();
+	Double[][] getAllLabels();
 	
 }

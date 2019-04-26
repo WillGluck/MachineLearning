@@ -2,7 +2,7 @@
 public class MockDataLoader implements IDataLoader {
     
     private Double[][] trainingData = {{0d, 0d}, {1d, 0d}, {0d, 1d}, {1d, 1d}};
-    private Double[] labels = {0d, 0d, 0d, 1d};
+    private Double[][] labels = {{0d}, {0d}, {0d}, {1d}};
          
     @Override
     public Double[] getExample() {
@@ -45,19 +45,19 @@ public class MockDataLoader implements IDataLoader {
     }
 
     @Override
-    public Double getSingleLabel() {
+    public Double[] getLabel() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Double[] getLabelBatch(Integer batchSize) {
+    public Double[][] getLabelBatch(Integer batchSize) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Double[] getAllLabels() {
+    public Double[][] getAllLabels() {
         return labels;
     }
 

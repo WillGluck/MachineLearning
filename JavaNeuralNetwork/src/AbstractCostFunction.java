@@ -20,7 +20,7 @@ public abstract class AbstractCostFunction implements ICostFunction {
 		Integer dataSize = dataLoader.getTrainingDataSize();
 				
 		Double[][] data = null;
-		Double[] labels = null;
+		Double[][] labels = null;
 		
 		if (null == batchSize) {
 		    data = dataLoader.getAllTrainingData();
@@ -33,9 +33,9 @@ public abstract class AbstractCostFunction implements ICostFunction {
 		Double cost = 0d;
 		for (int i = 0; i < dataSize; i++) {
 			Double[] prediction = nn.predict(data[i]);			
-			Double label = labels[i];
-			for (Integer j = 0; i < prediction.length; j++) {
-				cost += getFunction().apply(prediction[i]).apply(label.equals(j.doubleValue()) ? 1d : 0d);
+			Double[] label = labels[i];
+			for (Integer j = 0; j < prediction.length; j++) {
+				cost += getFunction().apply(prediction[j]).apply(label[j]);
 			}
 		}		
 		return cost;
